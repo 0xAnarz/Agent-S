@@ -32,6 +32,7 @@ engine_params = {
     "engine_type": "vllm",
     "model": "Qwen3-32B",
     "base_url": "http://192.168.1.112:8002/v1",  # Qwen vLLM endpoint
+    "api_key": "EMPTY",
 }
 # ---------------------------------------------------------------------------
 # Configuration of the grounding model (UI-TARS-1.5-7B) served by vLLM
@@ -43,6 +44,7 @@ engine_params_for_grounding = {
     "engine_type": "vllm",  # Using the same vLLM API as Qwen
     "model": "UI-TARS-1.5-7B",
     "base_url": "http://192.168.1.112:8001/v1",  # UI-TARS vLLM endpoint
+    "api_key": "EMPTY",
     "grounding_width": 1000,
     "grounding_height": 1000,
 }
