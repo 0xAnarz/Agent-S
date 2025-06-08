@@ -22,8 +22,8 @@ import pyautogui
 os.environ["OPENAI_API_KEY"] = "EMPTY"
 
 from gui_agents.s2.agents.agent_s import AgentS2
-from gui_agents.s2.agents.grounding import OSWorldACI, scale_screen_dimensions
-from gui_agents.s2.cli_app import run_agent
+from gui_agents.s2.agents.grounding import OSWorldACI
+from gui_agents.s2.cli_app import run_agent, scale_screen_dimensions
 
 # ---------------------------------------------------------------------------
 # Configuration of the main LLM (Qwen3-32B) served by a remote vLLM instance
