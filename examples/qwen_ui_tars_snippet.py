@@ -32,7 +32,7 @@ from gui_agents.s2.cli_app import run_agent, scale_screen_dimensions
 # the vLLM-compatible OpenAI API. Adjust the URL to match your deployment.
 engine_params = {
     "engine_type": "vllm",
-    "model": "Qwen3-32B",
+    "model": "qwen3-32b",  # Qwen3-32B model
     "base_url": "http://192.168.1.112:8002/v1",  # Qwen vLLM endpoint
     "api_key": "EMPTY",
 }
@@ -44,7 +44,7 @@ engine_params = {
 # resolution.
 engine_params_for_grounding = {
     "engine_type": "vllm",  # Using the same vLLM API as Qwen
-    "model": "UI-TARS-1.5-7B",
+    "model": "ui-tars-1.5-7B",  # UI-TARS-1.5-7B model
     "base_url": "http://192.168.1.112:8001/v1",  # UI-TARS vLLM endpoint
     "api_key": "EMPTY",
     "grounding_width": 1000,
