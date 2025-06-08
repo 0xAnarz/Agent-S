@@ -35,6 +35,8 @@ engine_params = {
     "model": "qwen3-32b",  # Qwen3-32B model
     "base_url": "http://192.168.1.112:8002/v1",  # Qwen vLLM endpoint
     "api_key": "EMPTY",
+    # Qwen3-32B is a text-only model, so disable image support
+    "supports_image": False,
 }
 # ---------------------------------------------------------------------------
 # Configuration of the grounding model (UI-TARS-1.5-7B) served by vLLM
@@ -80,7 +82,8 @@ agent = AgentS2(
     grounding_agent=grounding_agent,
     platform=current_platform,
     action_space="pyautogui",
-    observation_type="mixed",
+    # Provide only the accessibility tree to the language model
+    observation_type="a11y_tree",
     search_engine=None,
 )
 

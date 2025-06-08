@@ -39,6 +39,11 @@ class LMMAgent:
         else:
             self.engine = engine
 
+        # Whether the underlying engine supports image inputs. Defaults to True
+        self.supports_image = True
+        if engine_params is not None:
+            self.supports_image = engine_params.get("supports_image", True)
+
         self.messages = []  # Empty messages
 
         if system_prompt:
@@ -94,7 +99,7 @@ class LMMAgent:
                 "role": self.messages[index]["role"],
                 "content": [{"type": "text", "text": text_content}],
             }
-            if image_content:
+            if image_content and self.supports_image:
                 base64_image = self.encode_image(image_content)
                 self.messages[index]["content"].append(
                     {
@@ -141,7 +146,7 @@ class LMMAgent:
                 "content": [{"type": "text", "text": text_content}],
             }
 
-            if isinstance(image_content, np.ndarray) or image_content:
+            if (isinstance(image_content, np.ndarray) or image_content) and self.supports_image:
                 # Check if image_content is a list or a single image
                 if isinstance(image_content, list):
                     # If image_content is a list of images, loop through each image
@@ -192,7 +197,7 @@ class LMMAgent:
                 "content": [{"type": "text", "text": text_content}],
             }
 
-            if image_content:
+            if image_content and self.supports_image:
                 # Check if image_content is a list or a single image
                 if isinstance(image_content, list):
                     # If image_content is a list of images, loop through each image
@@ -239,7 +244,7 @@ class LMMAgent:
                 "content": [{"type": "text", "text": text_content}],
             }
 
-            if image_content:
+            if image_content and self.supports_image:
                 # Check if image_content is a list or a single image
                 if isinstance(image_content, list):
                     # If image_content is a list of images, loop through each image
