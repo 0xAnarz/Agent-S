@@ -116,15 +116,22 @@ def disable_images(lmm_agent):
 
 
 # Strip screenshots from all calls going to the Qwen-backed agents
-disable_images(agent.planner.generator_agent)
-disable_images(agent.executor.generator_agent)
-disable_images(agent.executor.reflection_agent)
-
 # Example instruction that requires both generation and visual grounding.
 # UI-TARS helps translate the Qwen-generated references into coordinates.
 query = "Open a text editor and type 'Hello from Agent-S!'"
 
+# Reset the agent to start from a clean state. ``AgentS2.__init__`` already
+# performs a reset, but we do it again in case the script is rerun without a
+# restart. Since ``reset`` recreates the internal LMM agents, we need to remove
+# screenshots *after* this call so that no newly created agent ever receives an
+# image.
 agent.reset()
+
+# Strip screenshots from all calls going to the Qwen-backed agents *after* the
+# reset so that the new instances are patched.
+disable_images(agent.planner.generator_agent)
+disable_images(agent.executor.generator_agent)
+disable_images(agent.executor.reflection_agent)
 
 # Run the agent on the host machine. This will continually query Qwen for
 # actions, ground them with UI-TARS and execute them via pyautogui.
