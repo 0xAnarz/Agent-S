@@ -58,14 +58,16 @@ scaled_width, scaled_height = scale_screen_dimensions(
 )
 
 # ---------------------------------------------------------------------------
-# Initialize the grounding agent. It uses Qwen for text-based commands that
-# require OCR grounding and UI-TARS for coordinate generation.
+# Initialize the grounding agent. All visual grounding (including OCR based
+# phrase alignment) is handled by UI-TARS, while Qwen remains responsible for
+# purely textual reasoning.
 # ---------------------------------------------------------------------------
 current_platform = platform.system().lower()
 
 grounding_agent = OSWorldACI(
     platform=current_platform,
-    engine_params_for_generation=engine_params,
+    # Use the visual model for any screenshot based operations
+    engine_params_for_generation=engine_params_for_grounding,
     engine_params_for_grounding=engine_params_for_grounding,
     width=screen_width,
     height=screen_height,
