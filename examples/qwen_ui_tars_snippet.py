@@ -16,8 +16,10 @@ Note:
 """
 
 import platform
-
+import os
 import pyautogui
+
+os.environ["OPENAI_API_KEY"] = "EMPTY"
 
 from gui_agents.s2.agents.agent_s import AgentS2
 from gui_agents.s2.agents.grounding import OSWorldACI, scale_screen_dimensions
