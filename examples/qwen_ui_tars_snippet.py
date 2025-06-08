@@ -80,9 +80,43 @@ agent = AgentS2(
     grounding_agent=grounding_agent,
     platform=current_platform,
     action_space="pyautogui",
-    observation_type="mixed",
+    observation_type="a11y_tree",
     search_engine=None,
 )
+
+# Disable multimodal reflection to ensure the text-only Qwen model never
+# receives screenshots. Reflection normally sends images to the LLM, which
+# would trigger a 400 error since Qwen3-32B is not multimodal.
+agent.executor.enable_reflection = False
+
+# Helper to remove screenshots from all messages sent to Qwen. The visual
+# grounding model (UI-TARS) still receives the image via ``obs['screenshot']``
+# inside ``OSWorldACI.generate_coords``.
+def disable_images(lmm_agent):
+    original_add = lmm_agent.add_message
+
+    def add_message_no_image(
+        text_content,
+        image_content=None,
+        role=None,
+        image_detail="high",
+        put_text_last=False,
+    ):
+        return original_add(
+            text_content,
+            None,
+            role=role,
+            image_detail=image_detail,
+            put_text_last=put_text_last,
+        )
+
+    lmm_agent.add_message = add_message_no_image
+
+
+# Strip screenshots from all calls going to the Qwen-backed agents
+disable_images(agent.planner.generator_agent)
+disable_images(agent.executor.generator_agent)
+disable_images(agent.executor.reflection_agent)
 
 # Example instruction that requires both generation and visual grounding.
 # UI-TARS helps translate the Qwen-generated references into coordinates.
